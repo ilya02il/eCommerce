@@ -4,6 +4,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Version>0.1.0</Version>
+    <Authors>Ilinykh Ilya</Authors>
+    <Description>Библиотека базовых классов для всех слоев приложения.</Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="eCommerce.Common.Tests" />
+  </ItemGroup>
 
 </Project>
