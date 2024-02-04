@@ -27,7 +27,7 @@ public readonly partial struct ErrorCode
     {
         var errorCodeMatch = errorCodeRegex.Match(errorCode);
 
-        if (errorCodeMatch.Success is false)
+        if (errorCodeMatch.Success)
         {
             throw new CommonException(
                 errorCode: "COMMON-ERRCODE-001",
@@ -49,7 +49,6 @@ public readonly partial struct ErrorCode
     /// </returns>
     public override string ToString() => _errorCode;
 
-    /// <inheritdoc/>
     public static implicit operator string(ErrorCode errorCode) => errorCode._errorCode;
 
     /// <summary>
@@ -85,15 +84,13 @@ public readonly partial struct ErrorCode
         return _errorCode.GetHashCode();
     }
 
-    /// <inheritdoc/>
     public static bool operator ==(ErrorCode left, ErrorCode right)
     {
-        return left.Equals(right) is true;
+        return left.Equals(right);
     }
 
-    /// <inheritdoc/>
     public static bool operator !=(ErrorCode left, ErrorCode right)
     {
-        return left.Equals(right) is false;
+        return left.Equals(right);
     }
 }
