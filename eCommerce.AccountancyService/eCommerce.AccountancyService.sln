@@ -5,25 +5,27 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8698AB54-D25E-489A-8AE8-AB8083745364}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerce.AccountancyService.Infrastructure", "src\eCommerce.AccountancyService.Infrastructure\eCommerce.AccountancyService.Infrastructure.csproj", "{E53D8AD5-E70A-462E-A738-B2C7846E0E62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.AccountancyService.Infrastructure", "src\eCommerce.AccountancyService.Infrastructure\eCommerce.AccountancyService.Infrastructure.csproj", "{E53D8AD5-E70A-462E-A738-B2C7846E0E62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerce.AccountancyService.Application", "src\eCommerce.AccountancyService.Application\eCommerce.AccountancyService.Application.csproj", "{1949DFA6-BE88-4406-9449-A2BB88CFA023}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.AccountancyService.Application", "src\eCommerce.AccountancyService.Application\eCommerce.AccountancyService.Application.csproj", "{1949DFA6-BE88-4406-9449-A2BB88CFA023}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerce.AccountancyService.Domain", "src\eCommerce.AccountancyService.Domain\eCommerce.AccountancyService.Domain.csproj", "{13289A06-DBF0-4984-8572-1794847F5E8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.AccountancyService.Domain", "src\eCommerce.AccountancyService.Domain\eCommerce.AccountancyService.Domain.csproj", "{13289A06-DBF0-4984-8572-1794847F5E8C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{407C09A3-02B7-4172-A542-174EA9D273CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerce.AccountancyService.Domain.Tests", "tests\eCommerce.AccountancyService.Domain.Tests\eCommerce.AccountancyService.Domain.Tests.csproj", "{D79D3E04-1558-47A7-9BDC-62F99807B4F6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.AccountancyService.Domain.Tests", "tests\eCommerce.AccountancyService.Domain.Tests\eCommerce.AccountancyService.Domain.Tests.csproj", "{D79D3E04-1558-47A7-9BDC-62F99807B4F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eCommerce.AccountancyService.Application.Tests", "tests\eCommerce.AccountancyService.Application.Tests\eCommerce.AccountancyService.Application.Tests.csproj", "{20914CF5-3393-49CF-A31D-2E8708790509}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eCommerce.AccountancyService.Application.Tests", "tests\eCommerce.AccountancyService.Application.Tests\eCommerce.AccountancyService.Application.Tests.csproj", "{20914CF5-3393-49CF-A31D-2E8708790509}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E9CC9C88-46CA-4D04-9425-F6CD35C27A8F}"
+	ProjectSection(SolutionItems) = preProject
+		..\.editorconfig = ..\.editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E53D8AD5-E70A-462E-A738-B2C7846E0E62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -46,6 +48,9 @@ Global
 		{20914CF5-3393-49CF-A31D-2E8708790509}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20914CF5-3393-49CF-A31D-2E8708790509}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20914CF5-3393-49CF-A31D-2E8708790509}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E53D8AD5-E70A-462E-A738-B2C7846E0E62} = {8698AB54-D25E-489A-8AE8-AB8083745364}
