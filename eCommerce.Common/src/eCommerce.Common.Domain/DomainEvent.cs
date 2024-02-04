@@ -12,13 +12,17 @@ public abstract record DomainEvent<TAggregateId> : Event
     /// Идентификатор агрегата,
     /// который опубликовал событие предметной области.
     /// </summary>
-    public required TAggregateId AggregateRootId { get; init; }
+    required public TAggregateId AggregateRootId { get; init; }
 
+    /// <inheritdoc cref="Event()"/>
+    protected DomainEvent()
+        : base()
+    {
+    }
 
-    /// <inheritdoc/>
-    public DomainEvent() : base() { }
-
-    /// <inheritdoc/>
-    public DomainEvent(TimeProvider timeProvider)
-        : base(timeProvider) { }
+    /// <inheritdoc cref="Event(TimeProvider)"/>
+    protected DomainEvent(TimeProvider timeProvider)
+        : base(timeProvider)
+    {
+    }
 }

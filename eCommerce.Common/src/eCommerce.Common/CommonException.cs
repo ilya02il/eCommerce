@@ -15,13 +15,13 @@ internal partial class CommonException : BaseException
     /// </summary>
     protected override Regex ErrorCodeRegex => GetCoreErrorCodeRegex();
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="BaseException(string, string)"/>
     public CommonException(string errorCode, string message)
         : base(errorCode, message)
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="BaseException(string, Exception)"/>
     public CommonException(string errorCode, Exception referencedException)
         : base(errorCode, referencedException)
     {

@@ -17,11 +17,6 @@ public abstract partial class BaseException : Exception
     }
 
     /// <summary>
-    /// Регулярное выражения для строки кода ошибки.
-    /// </summary>
-    protected virtual Regex ErrorCodeRegex => GetDefaultErrorCodeRegex();
-
-    /// <summary>
     /// Код ошибки.
     /// </summary>
     public ErrorCode ErrorCode { get; }
@@ -30,6 +25,11 @@ public abstract partial class BaseException : Exception
     /// Сообщение об ошибке.
     /// </summary>
     public string ErrorMessage { get; }
+
+    /// <summary>
+    /// Регулярное выражения для строки кода ошибки.
+    /// </summary>
+    protected virtual Regex ErrorCodeRegex => GetDefaultErrorCodeRegex();
 
     /// <summary>
     /// Создать новый экземпляр исключения,
@@ -42,7 +42,7 @@ public abstract partial class BaseException : Exception
     /// Другое исключение, сообщение которого будет
     /// взято за основу для создаваемого исключения.
     /// </param>
-    public BaseException(string errorCode, Exception referencedException)
+    protected BaseException(string errorCode, Exception referencedException)
         : base(GetFormattedErrorMessage(errorCode, referencedException.Message))
     {
         ErrorCode = new ErrorCode(errorCode, ErrorCodeRegex);
@@ -59,7 +59,7 @@ public abstract partial class BaseException : Exception
     /// <param name="errorMessage">
     /// Сообщение об ошибке.
     /// </param>
-    public BaseException(string errorCode, string errorMessage)
+    protected BaseException(string errorCode, string errorMessage)
         : base(GetFormattedErrorMessage(errorCode, errorMessage))
     {
         ErrorCode = new ErrorCode(errorCode, ErrorCodeRegex);
@@ -80,11 +80,12 @@ public abstract partial class BaseException : Exception
     /// <param name="innerException">
     /// Иключение, которое станет вложенным для создаваемого.
     /// </param>
-    public BaseException(
+    protected BaseException(
         string errorCode,
         string errorMessage,
         Exception innerException
-    ) : base(
+    )
+    : base(
         GetFormattedErrorMessage(errorCode, errorMessage),
         innerException
     )

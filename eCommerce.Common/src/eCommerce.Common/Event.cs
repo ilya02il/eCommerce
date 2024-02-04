@@ -11,7 +11,7 @@ public abstract record Event
     /// которого будет использоваться стандартный провайдер
     /// (<see cref="TimeProvider.System"/>).
     /// </summary>
-    public Event()
+    protected Event()
     {
         DateStamp = TimeProvider.System.GetUtcNow();
     }
@@ -24,7 +24,7 @@ public abstract record Event
     /// <param name="timeProvider">
     /// Провайдер для инициализации <see cref="DateStamp"/>.
     /// </param>
-    public Event(TimeProvider timeProvider)
+    protected Event(TimeProvider timeProvider)
     {
         DateStamp = timeProvider.GetUtcNow();
     }

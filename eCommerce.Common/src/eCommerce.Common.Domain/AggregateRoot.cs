@@ -17,7 +17,10 @@ public abstract class AggregateRoot<TId> : Entity<TId>
     /// <param name="identifier">
     /// Идентификатор агрегата.
     /// </param>
-    protected AggregateRoot(TId identifier) : base(identifier) { }
+    protected AggregateRoot(TId identifier)
+        : base(identifier)
+    {
+    }
 
     /// <summary>
     /// Коллекция для чтения событий доменной области,
