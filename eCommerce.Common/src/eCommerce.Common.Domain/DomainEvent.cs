@@ -12,17 +12,40 @@ public abstract record DomainEvent<TAggregateId> : Event
     /// Идентификатор агрегата,
     /// который опубликовал событие предметной области.
     /// </summary>
-    required public TAggregateId AggregateRootId { get; init; }
+    public TAggregateId AggregateRootId { get; private init; }
 
-    /// <inheritdoc cref="Event()"/>
-    protected DomainEvent()
+    /// <summary>
+    /// Создать новый экземпляр события предметной области
+    /// с указанием идентификатора агрегата,
+    /// опубликовавшего это событие.
+    /// </summary>
+    /// <param name="aggregateRootId">
+    /// Идентификатор агрегата, опубликовавшего событие.
+    /// </param>
+    protected DomainEvent(TAggregateId aggregateRootId)
         : base()
     {
+        AggregateRootId = aggregateRootId;
     }
 
-    /// <inheritdoc cref="Event(TimeProvider)"/>
-    protected DomainEvent(TimeProvider timeProvider)
+    /// <summary>
+    /// Создать новый экземпляр события предметной области,
+    /// в качестве провайдера для инциализации <see cref="DateStamp"/>
+    /// которого будет использоваться <paramref name="timeProvider"/>,
+    /// также указать идентификатор агрегата, опубликовавшего это событие.
+    /// </summary>
+    /// <param name="aggregateRootId">
+    /// Идентификатор агрегата, опубликовавшего событие.
+    /// </param>
+    /// <param name="timeProvider">
+    /// Провайдер даты и времени для инициализации <see cref="DateStamp"/>.
+    /// </param>
+    protected DomainEvent(
+        TAggregateId aggregateRootId,
+        TimeProvider timeProvider
+    )
         : base(timeProvider)
     {
+        AggregateRootId = aggregateRootId;
     }
 }
