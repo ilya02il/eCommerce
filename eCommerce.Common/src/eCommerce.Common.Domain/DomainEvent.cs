@@ -23,7 +23,7 @@ public abstract record DomainEvent<TAggregateId> : Event
     /// Идентификатор агрегата, опубликовавшего событие.
     /// </param>
     protected DomainEvent(TAggregateId aggregateRootId)
-        : base()
+    : base()
     {
         AggregateRootId = aggregateRootId;
     }
@@ -44,7 +44,7 @@ public abstract record DomainEvent<TAggregateId> : Event
         TAggregateId aggregateRootId,
         TimeProvider timeProvider
     )
-        : base(timeProvider)
+    : base(timeProvider)
     {
         AggregateRootId = aggregateRootId;
     }

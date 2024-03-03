@@ -5,21 +5,23 @@ public class AggregateRootTests
     private class TestAggregateRoot(int identifier)
         : AggregateRoot<int>(identifier)
     {
+        public int Identifier { get; private init; }
+
         public int SomeProperty { get; private set; }
 
         public TestAggregateRoot(int identifier, int propertyValue)
             : this(identifier)
         {
+            Identifier = identifier;
             SomeProperty = propertyValue;
         }
 
         public void SomeAction(int propertyValue)
         {
-            PublishDomainEvent(new TestDomainEvent
-            {
-                AggregateRootId = Id,
-                SomePropertyValue = propertyValue
-            });
+            PublishDomainEvent(new TestDomainEvent(
+                Identifier,
+                propertyValue
+            ));
         }
 
         public override void ApplyDomainEvent(DomainEvent<int> domainEvent)
@@ -33,7 +35,16 @@ public class AggregateRootTests
 
     private record TestDomainEvent : DomainEvent<int>
     {
-        public int SomePropertyValue { get; init; }
+        public int SomePropertyValue { get; private init; }
+
+        public TestDomainEvent(
+            int aggregateRootId,
+            int somePropertyValue
+        )
+        : base(aggregateRootId)
+        {
+            SomePropertyValue = somePropertyValue;
+        }
     }
 
     [Fact]
@@ -52,7 +63,7 @@ public class AggregateRootTests
             .DomainEvents
             .Should()
             .Contain(domainEvent =>
-                ((TestDomainEvent)domainEvent).AggregateRootId == aggregate.Id &&
+                ((TestDomainEvent)domainEvent).AggregateRootId == aggregate.Identifier &&
                 ((TestDomainEvent)domainEvent).SomePropertyValue == modifiedPropertyValue
             );
 
