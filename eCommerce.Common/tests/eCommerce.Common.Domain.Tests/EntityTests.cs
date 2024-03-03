@@ -46,7 +46,7 @@ public class EntityTests
         // Arrange
         var firstEntity = new FirstTestEntity(1);
         var firstEntityWithDifferentId = new FirstTestEntity(2);
-        FirstTestEntity nullFirstEntity = null;
+        FirstTestEntity? nullFirstEntity = null;
 
         var secondEntity = new SecondTestEntity(1);
 
