@@ -27,7 +27,7 @@ public readonly partial struct ErrorCode
     {
         var errorCodeMatch = errorCodeRegex.Match(errorCode);
 
-        if (errorCodeMatch.Success)
+        if (errorCodeMatch.Success is false)
         {
             throw new CommonException(
                 errorCode: "COMMON-ERRCODE-001",
@@ -70,12 +70,9 @@ public readonly partial struct ErrorCode
             return _errorCode.Equals(otherErrorCodeString);
         }
 
-        if (obj is not ErrorCode otherErrorCode)
-        {
-            return false;
-        }
-
-        return _errorCode.Equals(otherErrorCode._errorCode);
+        return
+            obj is ErrorCode otherErrorCode &&
+            _errorCode.Equals(otherErrorCode._errorCode);
     }
 
     /// <inheritdoc/>
