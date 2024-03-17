@@ -4,9 +4,13 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>0.1.0</Version>
+    <Version>0.1.1</Version>
     <Authors>Ilinykh Ilya</Authors>
     <Description>Библиотека базовых классов для всех слоев приложения.</Description>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DocumentationFile>bin\Release\eCommerce.Common.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
