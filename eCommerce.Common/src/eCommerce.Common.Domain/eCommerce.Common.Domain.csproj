@@ -4,21 +4,18 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>0.3.0</Version>
+    <Version>0.3.1</Version>
     <Authors>Ilinykh Ilya</Authors>
     <Description>Библиотека базовых классов для доменного слоя.</Description>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\eCommerce.Common\eCommerce.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <InternalsVisibleTo Include="eCommerce.Common.Domain.Tests" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="eCommerce.Common" Version="0.1.1" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="9.19.0.84025">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
