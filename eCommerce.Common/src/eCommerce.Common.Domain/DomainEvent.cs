@@ -30,7 +30,7 @@ public abstract record DomainEvent<TAggregateId> : Event
 
     /// <summary>
     /// Создать новый экземпляр события предметной области,
-    /// в качестве провайдера для инциализации <see cref="DateStamp"/>
+    /// в качестве провайдера для инциализации <see cref="Event.DateStamp"/>
     /// которого будет использоваться <paramref name="timeProvider"/>,
     /// также указать идентификатор агрегата, опубликовавшего это событие.
     /// </summary>
@@ -38,7 +38,7 @@ public abstract record DomainEvent<TAggregateId> : Event
     /// Идентификатор агрегата, опубликовавшего событие.
     /// </param>
     /// <param name="timeProvider">
-    /// Провайдер даты и времени для инициализации <see cref="DateStamp"/>.
+    /// Провайдер даты и времени для инициализации <see cref="Event.DateStamp"/>.
     /// </param>
     protected DomainEvent(
         TAggregateId aggregateRootId,
