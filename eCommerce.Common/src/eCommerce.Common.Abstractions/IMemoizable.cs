@@ -13,7 +13,6 @@
 /// состояние мемоизируемого объекта, (мементо).
 /// </typeparam>
 public interface IMemoizable<out TMemoizable, TMemento>
-    where TMemento : new()
 {
     /// <summary>
     /// Восстановить объект вместе с его состоянием из мементо.
