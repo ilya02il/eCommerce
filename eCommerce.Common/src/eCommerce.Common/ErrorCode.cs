@@ -5,7 +5,7 @@ namespace eCommerce.Common;
 /// <summary>
 /// Структура кода ошибки.
 /// </summary>
-public readonly partial struct ErrorCode
+public readonly struct ErrorCode
 {
     private readonly string _errorCode;
 
@@ -49,7 +49,17 @@ public readonly partial struct ErrorCode
     /// </returns>
     public override string ToString() => _errorCode;
 
-    public static implicit operator string(ErrorCode errorCode) => errorCode._errorCode;
+    /// <summary>
+    /// Неявное преобразование кода ошибки к строке.
+    /// </summary>
+    /// <param name="errorCode">
+    /// Код ошибки, который необходимо преобразовать.
+    /// </param>
+    /// <returns>
+    /// Преобразованный в строку код ошибки.
+    /// </returns>
+    public static implicit operator string(ErrorCode errorCode) =>
+        errorCode._errorCode;
 
     /// <summary>
     /// Проверить равны ли два два объекта как коды ошибок.
@@ -81,13 +91,33 @@ public readonly partial struct ErrorCode
         return _errorCode.GetHashCode();
     }
 
+    /// <summary>
+    /// Проверяет на равенство два кода ошибки с
+    /// помощью метода <see cref="Equals"/>
+    /// и возвращает результат его выполнения.
+    /// </summary>
+    /// <param name="left">Левый операнд.</param>
+    /// <param name="right">Правый операнд.</param>
+    /// <returns>
+    /// Результат выполнения проверки на равенство.
+    /// </returns>
     public static bool operator ==(ErrorCode left, ErrorCode right)
     {
         return left.Equals(right);
     }
 
+    /// <summary>
+    /// Проверяет на неравенство два кода ошибки с
+    /// помощью метода <see cref="Equals"/> и возвращает результат,
+    /// обратный результату этого метода.
+    /// </summary>
+    /// <param name="left">Левый операнд.</param>
+    /// <param name="right">Правый операнд.</param>
+    /// <returns>
+    /// Результат выполнения проверки на неравенство.
+    /// </returns>
     public static bool operator !=(ErrorCode left, ErrorCode right)
     {
-        return left.Equals(right);
+        return !(left == right);
     }
 }

@@ -2,6 +2,9 @@
 
 public class BaseExceptionTests
 {
+    const string ErrorCodeString = "COMMON-ERR-001";
+    const string ErrorMessage = "test";
+    
     private class TestException(
         string errorCode,
         string errorMessage,
@@ -16,66 +19,64 @@ public class BaseExceptionTests
     public void BaseException_Should_Have_Right_ErrorCode_And_ErrorMessage()
     {
         // Arrange
-        var errorCodeString = "COMMON-ERR-001";
-        var errorMessage = "test";
-        var exception = new CommonException(errorCodeString, errorMessage);
+        var exception = new CommonException(ErrorCodeString, ErrorMessage);
 
         // Assert
         exception
             .ErrorCode
             .Should()
-            .Be(errorCodeString);
+            .Be(ErrorCodeString);
 
         exception
             .ErrorMessage
             .Should()
-            .Be(errorMessage);
+            .Be(ErrorMessage);
     }
 
     [Fact]
     public void BaseException_Should_Have_Right_Message()
     {
         // Arrange
-        var errorCodeString = "COMMON-ERR-001";
-        var errorMessage = "test";
-        var exception = new CommonException(errorCodeString, errorMessage);
+        var exception = new CommonException(ErrorCodeString, ErrorMessage);
 
         // Assert
         exception
             .Message
             .Should()
-            .Be($"{errorCodeString}: {errorMessage}");
+            .Be($"{ErrorCodeString}: {ErrorMessage}");
     }
 
     [Fact]
-    public void BaseException_Should_Have_Refernced_Exception_Message_And_Right_ErrorCode()
+    public void BaseException_Should_Have_Referenced_Exception_Message_And_Right_ErrorCode()
     {
         // Arrange
-        var errorCodeString = "COMMON-ERR-001";
-        var referencedExceptionMessage = "test";
-        var referencedException = new Exception(referencedExceptionMessage);
-        var exception = new CommonException(errorCodeString, referencedException);
+        var referencedException = new Exception(ErrorMessage);
+        var exception = new CommonException(ErrorCodeString, referencedException);
 
         // Assert
         exception
             .ErrorCode
             .Should()
-            .Be(errorCodeString);
+            .Be(ErrorCodeString);
 
         exception
             .ErrorMessage
             .Should()
-            .Be(referencedExceptionMessage);
+            .Be(ErrorMessage);
     }
 
     [Fact]
     public void BaseException_Should_Have_Inner_Exception_And_Right_ErrorCode_And_Error_Message()
     {
         // Arrange
-        var errorCodeString = "ERR-001";
-        var errorMessage = "test";
-        var innerException = new Exception("test");
-        var exception = new TestException(errorCodeString, errorMessage, innerException);
+        const string errorCodeString = "ERR-001";
+        var innerException = new Exception(ErrorMessage);
+
+        var exception = new TestException(
+            errorCodeString,
+            ErrorMessage,
+            innerException
+        );
 
         // Assert
         exception
@@ -91,11 +92,11 @@ public class BaseExceptionTests
         exception
             .ErrorMessage
             .Should()
-            .Be(errorMessage);
+            .Be(ErrorMessage);
 
         exception
             .Message
             .Should()
-            .Be($"{errorCodeString}: {errorMessage}");
+            .Be($"{errorCodeString}: {ErrorMessage}");
     }
 }
