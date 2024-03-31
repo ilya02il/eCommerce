@@ -171,4 +171,72 @@ public class VersionTests
             .Should()
             .Be("1.2.3.4-five");
     }
+
+    [Fact]
+    public void Versions_Should_Be_Compatible()
+    {
+        // Arrange
+        var firstVersion = new Version(major: 1, minor: 0);
+        var secondVersion = new Version(major: 1, minor: 4);
+
+        // Act
+        var isVersionsCompatible =
+            firstVersion.IsCompatibleWith(secondVersion);
+
+        // Assert
+        isVersionsCompatible.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Versions_Should_Not_Be_Compatible()
+    {
+        // Arrange
+        var firstVersion = new Version(major: 1, minor: 0);
+        var secondVersion = new Version(major: 2, minor: 4);
+
+        // Act
+        var isVersionsCompatible =
+            firstVersion.IsCompatibleWith(secondVersion);
+
+        // Assert
+        isVersionsCompatible.Should().BeFalse();
+    }
+
+    [Fact]
+    public void Version_Creation_With_Invalid_Postfix_Should_Throw_Exception()
+    {
+        // Arrange
+        var uppercaseLatinCharsRange = Enumerable.Range('A', 'Z');
+        var lowercaseLatinCharsRange = Enumerable.Range('a', 'z');
+        var numbersCharsRange = Enumerable.Range('0', '9');
+
+        var forbiddenLetters = Enumerable
+            .Range(' ', '~')
+            .Except(uppercaseLatinCharsRange)
+            .Except(lowercaseLatinCharsRange)
+            .Except(numbersCharsRange)
+            .Except(['-', '.'])
+            .Select((code) => (char)code);
+
+        // Act
+        var wrongVersionsCreateActions = forbiddenLetters
+            .Select<char, Func<Version>>((letter) =>
+                () => new Version(major: 1, postfix: $"test{letter}")
+            )
+            .Append(() => new Version(major: 1, postfix: "тест"));
+
+        // Assert
+        wrongVersionsCreateActions
+            .Should()
+            .AllSatisfy((createAction) =>
+            {
+                createAction
+                    .Should()
+                    .ThrowExactly<CommonException>()
+                    .Which
+                    .ErrorCode
+                    .Should()
+                    .Be("COMMON-VERSION-001");
+            });
+    }
 }

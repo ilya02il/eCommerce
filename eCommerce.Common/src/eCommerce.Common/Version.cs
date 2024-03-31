@@ -7,7 +7,7 @@ namespace eCommerce.Common;
 /// </summary>
 public sealed partial record Version
 {
-    [GeneratedRegex(@"^[\w\d\-.]*$", RegexOptions.Compiled)]
+    [GeneratedRegex(@"^[A-Za-z\d\-.]*$", RegexOptions.Compiled)]
     private static partial Regex GetPostfixRegex();
 
     private readonly string? _postfix;
@@ -96,6 +96,21 @@ public sealed partial record Version
         Patch = patch;
         Build = build;
         Postfix = postfix;
+    }
+
+    /// <summary>
+    /// Проверить версию на совместимость с другой версией.
+    /// </summary>
+    /// <param name="otherVersion">
+    /// Версия, с которой проверяется совместимость.
+    /// </param>
+    /// <returns>
+    /// <see langword="true"/> - если версии совместимы,
+    /// иначе <see langword="false"/>.
+    /// </returns>
+    public bool IsCompatibleWith(Version otherVersion)
+    {
+        return otherVersion.Major == Major;
     }
 
     /// <inheritdoc />

@@ -4,24 +4,22 @@ public class EventTests
 {
     private record TestEvent : Event
     {
-        public TestEvent() : base() { }
+        public TestEvent() { }
 
         public TestEvent(TimeProvider timeProvider) : base(timeProvider) { }
     }
 
     private class TestTimeProvider : TimeProvider
     {
+        private static readonly Lazy<TestTimeProvider> LazyTimeProvider =
+            new(() => new TestTimeProvider(), LazyThreadSafetyMode.PublicationOnly);
+        
         private static readonly DateTimeOffset TestUtcNow =
             DateTimeOffset.UtcNow;
 
         public override DateTimeOffset GetUtcNow() => TestUtcNow;
-    }
 
-    private readonly TimeProvider _timeProvider;
-
-    public EventTests()
-    {
-        _timeProvider = new TestTimeProvider();
+        public static TestTimeProvider Instance => LazyTimeProvider.Value;
     }
 
     [Fact]
@@ -43,12 +41,12 @@ public class EventTests
     public void Event_DateStamp_Should_Be_Equals_To_UtcNow()
     {
         // Arrange
-        var testEvent = new TestEvent(_timeProvider);
+        var testEvent = new TestEvent(TestTimeProvider.Instance);
 
         // Assert
         testEvent
             .DateStamp
             .Should()
-            .Be(_timeProvider.GetUtcNow());
+            .Be(TestTimeProvider.Instance.GetUtcNow());
     }
 }
