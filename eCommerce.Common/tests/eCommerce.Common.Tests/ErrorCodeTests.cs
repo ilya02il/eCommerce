@@ -1,39 +1,89 @@
-﻿using System.Text.RegularExpressions;
+﻿using eCommerce.Common.Errors;
 
 namespace eCommerce.Common.Tests;
 
 public class ErrorCodeTests
 {
-    private static readonly Regex CommonErrorCodeRegex = new(
-        pattern: @"^COMMON-[A-ZА-Я-]{1,}[-]?(?>\d{1,})?$",
-        options: RegexOptions.Compiled
-    );
+    private const string ErrorCodeString = "COMMON-ERR-001";
 
     [Fact]
-    public void Create_An_Error_Code_With_Invalid_Format_Should_Throw_COMMON_ERR_001()
+    public void Create_An_Error_Code_With_Valid_Format_Should_Not_Throw_An_Error()
     {
         // Arrange
-        var errorCodeString = "ddd-83";
+        string[] correctErrorCodesStrings =
+        [
+            "ABC-123",
+            "ABC-ABC-123"
+        ];
 
         // Act
-        var errorCodeCreation = () => new ErrorCode(errorCodeString, CommonErrorCodeRegex);
+        var errorCodesCreators = correctErrorCodesStrings
+            .Select<string, Func<ErrorCode>>(
+                (errorCodeString) => () => new ErrorCode(errorCodeString)
+            );
 
         // Assert
-        errorCodeCreation
+        errorCodesCreators
             .Should()
-            .Throw<CommonException>()
-            .Which
-            .ErrorCode
+            .AllSatisfy((createAction) =>
+            {
+                createAction
+                    .Should()
+                    .NotThrow();
+            });
+    }
+    
+    [Fact]
+    public void Create_An_Error_Code_With_Invalid_Format_Should_Throw_An_Error()
+    {
+        // Arrange
+        string[] incorrectErrorCodesStrings =
+        [
+            "АБВ-123",
+            "abc-123",
+            "aBC-123",
+            "ABC",
+            "-ABC-123",
+            "ABC--123",
+            "ABC--ABC-123"
+        ];
+
+        // Act
+        var wrongErrorCodesCreators = incorrectErrorCodesStrings
+            .Select<string, Func<ErrorCode>>(
+                (errorCodeString) => () => new ErrorCode(errorCodeString)
+            );
+
+        // Assert
+        wrongErrorCodesCreators
             .Should()
-            .Be("COMMON-ERRCODE-001");
+            .AllSatisfy((createAction) =>
+            {
+                var exception = createAction
+                    .Should()
+                    .Throw<ErrorException>()
+                    .Which;
+
+                var error = ErrorCodeErrors
+                    .AnInputStringDoesNotMatchThePattern;
+
+                exception
+                    .ErrorCode
+                    .Should()
+                    .Be(error.Code);
+
+                exception
+                    .ErrorMessage
+                    .Should()
+                    .Contain(error.Message);
+            });
     }
 
     [Fact]
     public void ToString_Should_Returns_An_Error_Code_String()
     {
         // Arrange
-        var errorCodeString = "COMMON-ERR-001";
-        var errorCode = new ErrorCode(errorCodeString, CommonErrorCodeRegex);
+        var errorCode = new ErrorCode(ErrorCodeString);
 
         // Act
         var toStringResult = errorCode.ToString();
@@ -41,15 +91,14 @@ public class ErrorCodeTests
         // Assert
         toStringResult
             .Should()
-            .Be(errorCodeString);
+            .Be(ErrorCodeString);
     }
 
     [Fact]
     public void Implicit_To_String_Conversion_Result_Should_Be_Equals_To_Error_Code_String()
     {
         // Arrange
-        var errorCodeString = "COMMON-ERR-001";
-        var errorCode = new ErrorCode(errorCodeString, CommonErrorCodeRegex);
+        var errorCode = new ErrorCode(ErrorCodeString);
 
         // Act
         string implicitToStringResult = errorCode;
@@ -57,20 +106,19 @@ public class ErrorCodeTests
         // Assert
         implicitToStringResult
             .Should()
-            .Be(errorCodeString);
+            .Be(ErrorCodeString);
     }
 
     [Fact]
     public void Equals_And_Equal_Operator_Results_Should_Be_True()
     {
         // Arrange
-        var errorCodeString = "COMMON-ERR-001";
-        var firstErrorCode = new ErrorCode(errorCodeString, CommonErrorCodeRegex);
-        var secondErrorCode = new ErrorCode(errorCodeString, CommonErrorCodeRegex);
+        var firstErrorCode = new ErrorCode(ErrorCodeString);
+        var secondErrorCode = new ErrorCode(ErrorCodeString);
 
         // Act
         var errorCodesEqualsResult = firstErrorCode.Equals(secondErrorCode);
-        var errorStringEqualsResule = firstErrorCode.Equals(errorCodeString);
+        var errorStringEqualsResult = firstErrorCode.Equals(ErrorCodeString);
         var equalOperatorResult = firstErrorCode == secondErrorCode;
 
         // Arrange
@@ -78,7 +126,7 @@ public class ErrorCodeTests
             .Should()
             .BeTrue();
 
-        errorStringEqualsResule
+        errorStringEqualsResult
             .Should()
             .BeTrue();
 
@@ -91,14 +139,13 @@ public class ErrorCodeTests
     public void Equals_Result_Should_Be_False_And_Not_Equal_Operator_Result_Should_Be_True()
     {
         // Arrange
-        var firstErrorCodeString = "COMMON-ERR-001";
-        var secondErrorCodeString = "COMMON-ERR-002";
-        var firstErrorCode = new ErrorCode(firstErrorCodeString, CommonErrorCodeRegex);
-        var secondErrorCode = new ErrorCode(secondErrorCodeString, CommonErrorCodeRegex);
+        const string anotherErrorCodeString = "COMMON-ERR-002";
+        var firstErrorCode = new ErrorCode(ErrorCodeString);
+        var secondErrorCode = new ErrorCode(anotherErrorCodeString);
 
         // Act
         var errorCodesEqualsResult = firstErrorCode.Equals(secondErrorCode);
-        var errorStringEqualsResult = firstErrorCode.Equals(secondErrorCodeString);
+        var errorStringEqualsResult = firstErrorCode.Equals(anotherErrorCodeString);
         var differentTypesEqualsResult = firstErrorCode.Equals(default(int));
         var notEqualOperatorResult = firstErrorCode != secondErrorCode;
 
@@ -124,11 +171,10 @@ public class ErrorCodeTests
     public void GetHashCode_Result_Should_Be_Equals_To_Error_String_GetHashCode_Result()
     {
         // Arrange
-        var errorCodeString = "COMMON-ERR-001";
-        var errorCode = new ErrorCode(errorCodeString, CommonErrorCodeRegex);
+        var errorCode = new ErrorCode(ErrorCodeString);
 
         // Act
-        var errorCodeStringHashCode = errorCodeString.GetHashCode();
+        var errorCodeStringHashCode = ErrorCodeString.GetHashCode();
         var errorCodeHashCode = errorCode.GetHashCode();
 
         // Assert

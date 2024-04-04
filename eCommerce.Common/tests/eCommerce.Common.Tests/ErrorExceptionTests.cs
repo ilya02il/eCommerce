@@ -1,25 +1,15 @@
 ﻿namespace eCommerce.Common.Tests;
 
-public class BaseExceptionTests
+public class ErrorExceptionTests
 {
     const string ErrorCodeString = "COMMON-ERR-001";
     const string ErrorMessage = "test";
-    
-    private class TestException(
-        string errorCode,
-        string errorMessage,
-        Exception innerException
-    ) : BaseException(
-        errorCode,
-        errorMessage,
-        innerException
-    );
 
     [Fact]
-    public void BaseException_Should_Have_Right_ErrorCode_And_ErrorMessage()
+    public void Should_Have_Right_ErrorCode_And_ErrorMessage()
     {
         // Arrange
-        var exception = new CommonException(ErrorCodeString, ErrorMessage);
+        var exception = new ErrorException(ErrorCodeString, ErrorMessage, null);
 
         // Assert
         exception
@@ -34,10 +24,10 @@ public class BaseExceptionTests
     }
 
     [Fact]
-    public void BaseException_Should_Have_Right_Message()
+    public void Should_Have_Right_Message()
     {
         // Arrange
-        var exception = new CommonException(ErrorCodeString, ErrorMessage);
+        var exception = new ErrorException(ErrorCodeString, ErrorMessage, null);
 
         // Assert
         exception
@@ -47,32 +37,31 @@ public class BaseExceptionTests
     }
 
     [Fact]
-    public void BaseException_Should_Have_Referenced_Exception_Message_And_Right_ErrorCode()
+    public void Should_Have_Right_InnerException()
     {
         // Arrange
-        var referencedException = new Exception(ErrorMessage);
-        var exception = new CommonException(ErrorCodeString, referencedException);
+        var innerException = new Exception(ErrorMessage);
+        var exception = new ErrorException(
+            ErrorCodeString,
+            ErrorMessage,
+            innerException
+        );
 
         // Assert
         exception
-            .ErrorCode
+            .InnerException
             .Should()
-            .Be(ErrorCodeString);
-
-        exception
-            .ErrorMessage
-            .Should()
-            .Be(ErrorMessage);
+            .Be(innerException);
     }
 
     [Fact]
-    public void BaseException_Should_Have_Inner_Exception_And_Right_ErrorCode_And_Error_Message()
+    public void Should_Have_Inner_Exception_And_Right_ErrorCode_Error_Message_And_InnerException()
     {
         // Arrange
         const string errorCodeString = "ERR-001";
         var innerException = new Exception(ErrorMessage);
 
-        var exception = new TestException(
+        var exception = new ErrorException(
             errorCodeString,
             ErrorMessage,
             innerException
