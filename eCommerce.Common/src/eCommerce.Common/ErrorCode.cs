@@ -1,12 +1,17 @@
 ﻿using System.Text.RegularExpressions;
 
+using eCommerce.Common.Errors;
+
 namespace eCommerce.Common;
 
 /// <summary>
 /// Структура кода ошибки.
 /// </summary>
-public readonly struct ErrorCode
+public readonly partial struct ErrorCode
 {
+    [GeneratedRegex(@"^[A-Z]{1,}(?>\-[A-Z]{1,}){0,}-\d{3}$")]
+    private static partial Regex GetErrorCodeRegex();
+
     private readonly string _errorCode;
 
     /// <summary>
@@ -16,26 +21,17 @@ public readonly struct ErrorCode
     /// <param name="errorCode">
     /// Строка кода ошибки.
     /// </param>
-    /// <param name="errorCodeRegex">
-    /// Регулярное выражение для строки кода ошибки.
-    /// </param>
-    /// <exception cref="CommonException">
-    /// Исключение, которое будет выброшено если
-    /// строка кода ошибки не соответствует регулярному выражению.
-    /// </exception>
-    public ErrorCode(string errorCode, Regex errorCodeRegex)
+    public ErrorCode(string errorCode)
     {
-        var errorCodeMatch = errorCodeRegex.Match(errorCode);
-
-        if (errorCodeMatch.Success is false)
+        if (GetErrorCodeRegex().IsMatch(errorCode) is false)
         {
-            throw new CommonException(
-                errorCode: "COMMON-ERRCODE-001",
-                message:
-                    "Некорректный формат строки кода ошибки. " +
-                    "Строка кода ошибки должна соответствовать следующему регулярному выражению: " +
-                    $"'{errorCodeRegex}'."
-            );
+            throw ErrorCodeErrors
+                .AnInputStringDoesNotMatchThePattern
+                .AppendMessage(
+                    "Строка кода ошибки должна соответствовать " +
+                    "следующему регулярному выражению: " +
+                    $"'{GetErrorCodeRegex()}'."
+                );
         }
 
         _errorCode = errorCode;
@@ -48,6 +44,18 @@ public readonly struct ErrorCode
     /// Код ошибки в виде строки.
     /// </returns>
     public override string ToString() => _errorCode;
+
+    /// <summary>
+    /// Неявное преобразование строки в код ошибки.
+    /// </summary>
+    /// <param name="errorCode">
+    /// Строка, которую необходимо преобразовать в код ошибки.
+    /// </param>
+    /// <returns>
+    /// Код ошибки, получившийся в результате преобразования строки.
+    /// </returns>
+    public static implicit operator ErrorCode(string errorCode) =>
+        new(errorCode);
 
     /// <summary>
     /// Неявное преобразование кода ошибки к строке.

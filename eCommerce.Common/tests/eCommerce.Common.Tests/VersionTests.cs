@@ -1,4 +1,6 @@
-﻿namespace eCommerce.Common.Tests;
+﻿using eCommerce.Common.Errors;
+
+namespace eCommerce.Common.Tests;
 
 public class VersionTests
 {
@@ -230,13 +232,22 @@ public class VersionTests
             .Should()
             .AllSatisfy((createAction) =>
             {
-                createAction
+                var exception = createAction
                     .Should()
-                    .ThrowExactly<CommonException>()
-                    .Which
+                    .Throw<ErrorException>()
+                    .Which;
+
+                var error = VersionErrors.IncorrectPostfixFormat;
+                
+                exception
                     .ErrorCode
                     .Should()
-                    .Be("COMMON-VERSION-001");
+                    .Be(error.Code);
+
+                exception
+                    .ErrorMessage
+                    .Should()
+                    .Contain(error.Message);
             });
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 
+using eCommerce.Common.Errors;
+
 namespace eCommerce.Common;
 
 /// <summary>
@@ -47,13 +49,7 @@ public sealed partial record Version
         {
             if (value is not null && GetPostfixRegex().IsMatch(value) is false)
             {
-                throw new CommonException(
-                    errorCode: "COMMON-VERSION-001",
-                    message:
-                        "Некорректный формат постфикса версии. " +
-                        "Постфикс может содержать только латинские буквы, " +
-                        "цифры и следующие знаки: '-', '.'."
-                );
+                throw VersionErrors.IncorrectPostfixFormat;
             }
 
             _postfix = value;
