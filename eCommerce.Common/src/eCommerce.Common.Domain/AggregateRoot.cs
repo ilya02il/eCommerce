@@ -1,4 +1,6 @@
-﻿namespace eCommerce.Common.Domain;
+﻿using eCommerce.Common.Domain.Errors;
+
+namespace eCommerce.Common.Domain;
 
 /// <summary>
 /// Базовый класс для агрегатов.
@@ -30,18 +32,42 @@ public abstract class AggregateRoot<TId> : Entity<TId>
         _domainEventsQueue;
 
     /// <summary>
-    /// Опубликовать и применить к агрегату
-    /// событие предметной области.
+    /// Применить событие предметной области к агрегату.
     /// </summary>
     /// <param name="domainEvent">
-    /// Событие предметой области,
-    /// которое необходимо опубликовать и
-    /// применить к агрегату.
+    /// Событие предметной области,
+    /// которое необходимо применить к агрегату.
     /// </param>
-    public void PublishDomainEvent(DomainEvent<TId> domainEvent)
+    /// <param name="dateTimeProvider">
+    /// Провайдер даты и времени.
+    /// </param>
+    public void ApplyDomainEvent(
+        DomainEvent<TId> domainEvent,
+        TimeProvider dateTimeProvider
+    )
     {
-        _domainEventsQueue.Enqueue(domainEvent);
-        ApplyDomainEvent(domainEvent);
+        if (domainEvent.AggregateName != AggregateName)
+        {
+            throw AggregateRootErrors
+                .DomainEventHasDifferentAggregate;
+        }
+
+        if (domainEvent.AggregateVersion.IsCompatibleWith(AggregateVersion) is false)
+        {
+            var requiredVersion = new Version(AggregateVersion.Major);
+
+            throw AggregateRootErrors
+                .DomainEventHasNotCompatibleAggregateVersion
+                .AppendMessage($"Необходима версия агрегата >= {requiredVersion}.");
+        }
+
+        if (domainEvent.AggregateRootId!.Equals(Id) is false)
+        {
+            throw AggregateRootErrors
+                .DomainEventFromAnotherAggregateInstance;
+        }
+
+        ApplyDomainEventInternal(domainEvent, dateTimeProvider);
     }
 
     /// <summary>
@@ -51,5 +77,32 @@ public abstract class AggregateRoot<TId> : Entity<TId>
     /// Событие предметной области,
     /// которое необходимо применить к агрегату.
     /// </param>
-    public abstract void ApplyDomainEvent(DomainEvent<TId> domainEvent);
+    /// <param name="dateTimeProvider">
+    /// Провайдер даты и времени.
+    /// </param>
+    protected abstract void ApplyDomainEventInternal(
+        DomainEvent<TId> domainEvent,
+        TimeProvider dateTimeProvider
+    );
+
+    /// <summary>
+    /// Опубликовать и применить к агрегату
+    /// событие предметной области.
+    /// </summary>
+    /// <param name="domainEvent">
+    /// Событие предметой области,
+    /// которое необходимо опубликовать и
+    /// применить к агрегату.
+    /// </param>
+    /// <param name="dateTimeProvider">
+    /// Провайдер даты и времени.
+    /// </param>
+    protected void PublishDomainEvent(
+        DomainEvent<TId> domainEvent,
+        TimeProvider dateTimeProvider
+    )
+    {
+        ApplyDomainEvent(domainEvent, dateTimeProvider);
+        _domainEventsQueue.Enqueue(domainEvent);
+    }
 }
