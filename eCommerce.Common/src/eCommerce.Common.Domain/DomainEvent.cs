@@ -6,13 +6,20 @@
 /// <typeparam name="TAggregateId">
 /// Тип идентификатора агрегата.
 /// </typeparam>
-public abstract record DomainEvent<TAggregateId> : Event
+public abstract record DomainEvent<TAggregateId> : Event, IAggregateMember
 {
     /// <summary>
     /// Идентификатор агрегата,
-    /// который опубликовал событие предметной области.
+    /// который опубликовал данное
+    /// событие предметной области.
     /// </summary>
     public TAggregateId AggregateRootId { get; private init; }
+
+    /// <inheritdoc />
+    public abstract string AggregateName { get; }
+
+    /// <inheritdoc />
+    public abstract Version AggregateVersion { get; }
 
     /// <summary>
     /// Создать новый экземпляр события предметной области
@@ -23,7 +30,6 @@ public abstract record DomainEvent<TAggregateId> : Event
     /// Идентификатор агрегата, опубликовавшего событие.
     /// </param>
     protected DomainEvent(TAggregateId aggregateRootId)
-    : base()
     {
         AggregateRootId = aggregateRootId;
     }
