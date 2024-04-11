@@ -3,10 +3,36 @@
 public class EntityTests
 {
     private class FirstTestEntity(int identifier)
-        : Entity<int>(identifier);
+        : Entity<int>(identifier)
+    {
+        public override string AggregateName => nameof(EntityTests);
+
+        public override Version AggregateVersion => new(major: 1);
+    }
 
     private class SecondTestEntity(int identifier)
-        : Entity<int>(identifier);
+        : Entity<int>(identifier)
+    {
+        public override string AggregateName => nameof(EntityTests);
+
+        public override Version AggregateVersion => new(major: 1);
+    }
+
+    private class ThirdTestEntity(int identifier)
+        : Entity<int>(identifier)
+    {
+        public override string AggregateName => nameof(EntityTests);
+
+        public override Version AggregateVersion => new(major: 2);
+    }
+
+    private class FourthTestEntity(int identifier)
+        : Entity<int>(identifier)
+    {
+        public override string AggregateName => "test";
+
+        public override Version AggregateVersion => new(major: 1);
+    }
 
     [Fact]
     public void Entities_Should_Be_Equal()
@@ -49,6 +75,8 @@ public class EntityTests
         FirstTestEntity? nullFirstEntity = null;
 
         var secondEntity = new SecondTestEntity(1);
+        var thirdEntity = new ThirdTestEntity(1);
+        var fourthEntity = new FourthTestEntity(1);
 
         // Act
         var equalsWithNotEntityResult = firstEntity
@@ -56,6 +84,12 @@ public class EntityTests
 
         var equalsWithOtherTypeEntityResult = firstEntity
             .Equals(secondEntity);
+
+        var equalsWithAnotherAggregateVersionResult = firstEntity
+            .Equals(thirdEntity);
+
+        var equalsWithAnotherAggregateEntityResult = firstEntity
+            .Equals(fourthEntity);
 
         var equalsOfEntityWithDifferentIdsResult = firstEntity
             .Equals(firstEntityWithDifferentId);
@@ -75,6 +109,14 @@ public class EntityTests
             .BeFalse();
 
         equalsWithOtherTypeEntityResult
+            .Should()
+            .BeFalse();
+
+        equalsWithAnotherAggregateVersionResult
+            .Should()
+            .BeFalse();
+
+        equalsWithAnotherAggregateEntityResult
             .Should()
             .BeFalse();
 
