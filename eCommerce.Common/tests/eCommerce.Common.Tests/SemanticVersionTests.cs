@@ -141,6 +141,34 @@ public class SemanticVersionTests
     }
 
     [Fact]
+    public void Versions_HashCodes_Should_Be_Equal()
+    {
+        // Arrange
+        var firstVersion = new SemanticVersion(
+            major: 1,
+            minor: 2,
+            patch: 3,
+            build: 4,
+            postfix: "five"
+        );
+
+        var secondVersion = new SemanticVersion(
+            major: 1,
+            minor: 2,
+            patch: 3,
+            build: 4,
+            postfix: "five"
+        );
+
+        // Act
+        var firstHashCode = firstVersion.GetHashCode();
+        var secondHashCode = secondVersion.GetHashCode();
+
+        // Assert
+        firstHashCode.Should().Be(secondHashCode);
+    }
+
+    [Fact]
     public void Version_ToString_Should_Return_Correct_String()
     {
         // Arrange
