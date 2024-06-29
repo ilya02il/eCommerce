@@ -16,27 +16,20 @@ public sealed class ErrorException : Exception
     public string ErrorMessage { get; }
 
     /// <summary>
-    /// Создать новое исключение на
-    /// основе информации об ошибке.
+    /// Создать новое исключение на основе информации об ошибке.
     /// </summary>
-    /// <param name="errorCode">
-    /// Код ошибки.
-    /// </param>
-    /// <param name="message">
-    /// Сообщение об ошибке.
-    /// </param>
-    /// <param name="innerException">
-    /// Внутреннее исключение.
-    /// </param>
+    /// <param name="errorCode">Код ошибки.</param>
+    /// <param name="message">Сообщение об ошибке.</param>
+    /// <param name="innerException">Внутреннее исключение.</param>
     internal ErrorException(
         ErrorCode errorCode,
         string message,
         Exception? innerException
     )
-        : base(
-            CreateExceptionMessage(errorCode, message),
-            innerException
-        )
+    : base(
+        CreateExceptionMessage(errorCode, message),
+        innerException
+    )
     {
         ErrorCode = errorCode;
         ErrorMessage = message;
