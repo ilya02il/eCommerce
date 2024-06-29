@@ -52,9 +52,7 @@ public class Error
     /// <summary>
     /// Добавить префикс к сообщению.
     /// </summary>
-    /// <param name="messagePrefix">
-    /// Префикс сообщения.
-    /// </param>
+    /// <param name="messagePrefix">Префикс сообщения.</param>
     /// <returns>
     /// Ошибку с добавленным префиксом в сообщении.
     /// </returns>
@@ -67,15 +65,11 @@ public class Error
     }
 
     /// <summary>
-    /// Добавить в конец сообщения
-    /// дополнительное сообщение.
+    /// Добавить в конец сообщения дополнительное сообщение.
     /// </summary>
-    /// <param name="message">
-    /// Дополнительное сообщение.
-    /// </param>
+    /// <param name="message">Дополнительное сообщение.</param>
     /// <returns>
-    /// Ошибку с добавленным к ее сообщению
-    /// дополнительным сообщением.
+    /// Ошибку с добавленным к ее сообщению дополнительным сообщением.
     /// </returns>
     public Error AppendMessage(string message)
     {
@@ -88,12 +82,9 @@ public class Error
     /// <summary>
     /// Добавить к ошибке внутреннее исключение.
     /// </summary>
-    /// <param name="innerException">
-    /// Внутреннее исключение.
-    /// </param>
+    /// <param name="innerException">Внутреннее исключение.</param>
     /// <returns>
-    /// Ошибку с добавленным к ней
-    /// внутренним исключением.
+    /// Ошибку с добавленным к ней внутренним исключением.
     /// </returns>
     public Error WithInnerException(Exception innerException)
     {
@@ -120,9 +111,7 @@ public class Error
     /// <summary>
     /// Преобразовать ошибку в исключение.
     /// </summary>
-    /// <param name="error">
-    /// Ошибка, которую нужно преобразовать в исключение.
-    /// </param>
+    /// <param name="error">Ошибка, которую нужно преобразовать в исключение.</param>
     /// <returns>
     /// Исключение, созданное на основе ошибки.
     /// </returns>

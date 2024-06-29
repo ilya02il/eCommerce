@@ -18,9 +18,7 @@ public readonly partial struct ErrorCode
     /// Создать новый экземпляр кода ошибки,
     /// используя строку кода ошибки и регулярное выражение для нее.
     /// </summary>
-    /// <param name="errorCode">
-    /// Строка кода ошибки.
-    /// </param>
+    /// <param name="errorCode">Строка кода ошибки.</param>
     public ErrorCode(string errorCode)
     {
         if (GetErrorCodeRegex().IsMatch(errorCode) is false)
@@ -48,9 +46,7 @@ public readonly partial struct ErrorCode
     /// <summary>
     /// Неявное преобразование строки в код ошибки.
     /// </summary>
-    /// <param name="errorCode">
-    /// Строка, которую необходимо преобразовать в код ошибки.
-    /// </param>
+    /// <param name="errorCode">Строка, которую необходимо преобразовать в код ошибки.</param>
     /// <returns>
     /// Код ошибки, получившийся в результате преобразования строки.
     /// </returns>
@@ -60,9 +56,7 @@ public readonly partial struct ErrorCode
     /// <summary>
     /// Неявное преобразование кода ошибки к строке.
     /// </summary>
-    /// <param name="errorCode">
-    /// Код ошибки, который необходимо преобразовать.
-    /// </param>
+    /// <param name="errorCode">Код ошибки, который необходимо преобразовать.</param>
     /// <returns>
     /// Преобразованный в строку код ошибки.
     /// </returns>
@@ -72,9 +66,7 @@ public readonly partial struct ErrorCode
     /// <summary>
     /// Проверить равны ли два два объекта как коды ошибок.
     /// </summary>
-    /// <param name="obj">
-    /// Другой объект.
-    /// </param>
+    /// <param name="obj">Другой объект.</param>
     /// <returns>
     /// <see langword="true"/> -
     /// если объекты имеют одинаковый тип и их строки кодов ошибок равны,
@@ -111,7 +103,7 @@ public readonly partial struct ErrorCode
     /// </returns>
     public static bool operator ==(ErrorCode left, ErrorCode right)
     {
-        return left.Equals(right);
+        return left.Equals(right) is true;
     }
 
     /// <summary>
@@ -126,6 +118,6 @@ public readonly partial struct ErrorCode
     /// </returns>
     public static bool operator !=(ErrorCode left, ErrorCode right)
     {
-        return !(left == right);
+        return left.Equals(right) is false;
     }
 }
