@@ -1,25 +1,12 @@
-﻿namespace eCommerce.Common.Tests;
+﻿using Moq;
+
+namespace eCommerce.Common.Tests;
 
 public class EventTests
 {
     private record TestEvent : Event
     {
-        public TestEvent() { }
-
-        public TestEvent(TimeProvider timeProvider) : base(timeProvider) { }
-    }
-
-    private class TestTimeProvider : TimeProvider
-    {
-        private static readonly Lazy<TestTimeProvider> LazyTimeProvider =
-            new(() => new TestTimeProvider(), LazyThreadSafetyMode.PublicationOnly);
-        
-        private static readonly DateTimeOffset TestUtcNow =
-            DateTimeOffset.UtcNow;
-
-        public override DateTimeOffset GetUtcNow() => TestUtcNow;
-
-        public static TestTimeProvider Instance => LazyTimeProvider.Value;
+        public TestEvent(TimeProvider? timeProvider = null) : base(timeProvider) { }
     }
 
     [Fact]
@@ -41,12 +28,16 @@ public class EventTests
     public void Event_DateStamp_Should_Be_Equals_To_UtcNow()
     {
         // Arrange
-        var testEvent = new TestEvent(TestTimeProvider.Instance);
+        var timeProviderMock = Mock.Of<TimeProvider>((timeProvider) =>
+            timeProvider.GetUtcNow() == DateTimeOffset.UtcNow
+        );
+
+        var testEvent = new TestEvent(timeProviderMock);
 
         // Assert
         testEvent
             .DateStamp
             .Should()
-            .Be(TestTimeProvider.Instance.GetUtcNow());
+            .Be(timeProviderMock.GetUtcNow());
     }
 }

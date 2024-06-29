@@ -1,9 +1,9 @@
 ﻿namespace eCommerce.Common.Errors;
 
 /// <summary>
-/// Ошибки, возникающие в <see cref="Version"/>.
+/// Ошибки, возникающие в <see cref="SemanticVersion"/>.
 /// </summary>
-public static class VersionErrors
+public static class SemanticVersionErrors
 {
     /// <summary>
     /// Некорректный формат постфикса версии.

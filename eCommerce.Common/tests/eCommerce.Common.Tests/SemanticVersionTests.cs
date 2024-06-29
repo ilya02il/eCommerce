@@ -2,13 +2,13 @@
 
 namespace eCommerce.Common.Tests;
 
-public class VersionTests
+public class SemanticVersionTests
 {
     [Fact]
     public void Versions_Should_Create_Correctly()
     {
         // Arrange
-        var fullVersion = new Version(
+        var fullVersion = new SemanticVersion(
             major: 1, 
             minor: 2,
             patch: 3,
@@ -16,25 +16,25 @@ public class VersionTests
             postfix: "five"
         );
 
-        var versionWithoutPostfix = new Version(
+        var versionWithoutPostfix = new SemanticVersion(
             major: 1,
             minor: 2,
             patch: 3,
             build: 4
         );
 
-        var versionWithoutPostfixAndBuild = new Version(
+        var versionWithoutPostfixAndBuild = new SemanticVersion(
             major: 1,
             minor: 2,
             patch: 3
         );
 
-        var versionWithOnlyMajorAndMinor = new Version(
+        var versionWithOnlyMajorAndMinor = new SemanticVersion(
             major: 1,
             minor: 2
         );
 
-        var versionWithOnlyMajor = new Version(major: 1);
+        var versionWithOnlyMajor = new SemanticVersion(major: 1);
 
         // Assert
         new[]
@@ -85,7 +85,7 @@ public class VersionTests
     public void Versions_Should_Be_Equal()
     {
         // Arrange
-        var firstVersion = new Version(
+        var firstVersion = new SemanticVersion(
             major: 1,
             minor: 2,
             patch: 3,
@@ -93,7 +93,7 @@ public class VersionTests
             postfix: "five"
         );
 
-        var secondVersion = new Version(
+        var secondVersion = new SemanticVersion(
             major: 1,
             minor: 2,
             patch: 3,
@@ -114,7 +114,7 @@ public class VersionTests
     public void Versions_Should_Not_Be_Equal()
     {
         // Arrange
-        var firstVersion = new Version(
+        var firstVersion = new SemanticVersion(
             major: 1,
             minor: 2,
             patch: 3,
@@ -122,7 +122,7 @@ public class VersionTests
             postfix: "five"
         );
 
-        var secondVersion = new Version(
+        var secondVersion = new SemanticVersion(
             major: 1,
             minor: 2,
             patch: 3,
@@ -132,24 +132,54 @@ public class VersionTests
         // Act
         var equalsResult = firstVersion.Equals(secondVersion);
         var equalityOperatorResult = firstVersion == secondVersion;
+        var nonEqualityOperatorResult = firstVersion != secondVersion;
 
         // Assert
         equalsResult.Should().BeFalse();
         equalityOperatorResult.Should().BeFalse();
+        nonEqualityOperatorResult.Should().BeTrue();
+    }
+
+    [Fact]
+    public void Versions_HashCodes_Should_Be_Equal()
+    {
+        // Arrange
+        var firstVersion = new SemanticVersion(
+            major: 1,
+            minor: 2,
+            patch: 3,
+            build: 4,
+            postfix: "five"
+        );
+
+        var secondVersion = new SemanticVersion(
+            major: 1,
+            minor: 2,
+            patch: 3,
+            build: 4,
+            postfix: "five"
+        );
+
+        // Act
+        var firstHashCode = firstVersion.GetHashCode();
+        var secondHashCode = secondVersion.GetHashCode();
+
+        // Assert
+        firstHashCode.Should().Be(secondHashCode);
     }
 
     [Fact]
     public void Version_ToString_Should_Return_Correct_String()
     {
         // Arrange
-        var versionWithoutPostfix = new Version(
+        var versionWithoutPostfix = new SemanticVersion(
             major: 1,
             minor: 2,
             patch: 3,
             build: 4
         );
         
-        var versionWithPostfix = new Version(
+        var versionWithPostfix = new SemanticVersion(
             major: 1,
             minor: 2,
             patch: 3,
@@ -178,8 +208,8 @@ public class VersionTests
     public void Versions_Should_Be_Compatible()
     {
         // Arrange
-        var firstVersion = new Version(major: 1, minor: 0);
-        var secondVersion = new Version(major: 1, minor: 4);
+        var firstVersion = new SemanticVersion(major: 1, minor: 0);
+        var secondVersion = new SemanticVersion(major: 1, minor: 4);
 
         // Act
         var isVersionsCompatible =
@@ -193,8 +223,8 @@ public class VersionTests
     public void Versions_Should_Not_Be_Compatible()
     {
         // Arrange
-        var firstVersion = new Version(major: 1, minor: 0);
-        var secondVersion = new Version(major: 2, minor: 4);
+        var firstVersion = new SemanticVersion(major: 1, minor: 0);
+        var secondVersion = new SemanticVersion(major: 2, minor: 4);
 
         // Act
         var isVersionsCompatible =
@@ -222,10 +252,10 @@ public class VersionTests
 
         // Act
         var wrongVersionsCreateActions = forbiddenLetters
-            .Select<char, Func<Version>>((letter) =>
-                () => new Version(major: 1, postfix: $"test{letter}")
+            .Select<char, Func<SemanticVersion>>((letter) =>
+                () => new SemanticVersion(major: 1, postfix: $"test{letter}")
             )
-            .Append(() => new Version(major: 1, postfix: "тест"));
+            .Append(() => new SemanticVersion(major: 1, postfix: "тест"));
 
         // Assert
         wrongVersionsCreateActions
@@ -237,7 +267,7 @@ public class VersionTests
                     .Throw<ErrorException>()
                     .Which;
 
-                var error = VersionErrors.IncorrectPostfixFormat;
+                var error = SemanticVersionErrors.IncorrectPostfixFormat;
                 
                 exception
                     .ErrorCode
