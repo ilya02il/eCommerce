@@ -1,17 +1,17 @@
 ﻿namespace eCommerce.Common.Domain;
 
 /// <summary>
-/// Интерфейс члена агрегата.
+/// Дескриптор агрегата.
 /// </summary>
-public interface IAggregateMember
+public readonly struct AggregateDescriptor
 {
     /// <summary>
     /// Название агрегата.
     /// </summary>
-    public string AggregateName { get; }
+    public required string Name { get; init; }
 
     /// <summary>
     /// Семантическая версия агрегата.
     /// </summary>
-    public Version AggregateVersion { get; }
+    public required SemanticVersion Version { get; init; }
 }

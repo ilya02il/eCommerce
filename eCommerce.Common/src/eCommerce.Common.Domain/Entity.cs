@@ -6,14 +6,9 @@
 /// <typeparam name="TId">
 /// Тип идентификатора сущности.
 /// </typeparam>
-public abstract class Entity<TId> : IAggregateMember
+public abstract class Entity<TId>
+    where TId : IEquatable<TId>
 {
-    /// <inheritdoc />
-    public abstract string AggregateName { get; }
-
-    /// <inheritdoc />
-    public abstract Version AggregateVersion { get; }
-
     /// <summary>
     /// Идентификатор сущности.
     /// Это свойство идентифицирует сущность.
@@ -21,7 +16,7 @@ public abstract class Entity<TId> : IAggregateMember
     /// считаются равными, даже если другие их поля
     /// имеют различные значения.
     /// </summary>
-    protected TId Id { get; }
+    public TId Id { get; }
 
     /// <summary>
     /// Создать новый экземпляр сущности с
@@ -36,8 +31,7 @@ public abstract class Entity<TId> : IAggregateMember
     }
 
     /// <summary>
-    /// Определить равен ли указанный объект
-    /// (<paramref name="obj"/>) данной сущности.
+    /// Определить равен ли указанный объект (<paramref name="obj"/>) данной сущности.
     /// </summary>
     /// <param name="obj">
     /// Объект, сравниваемый с данной сущностью.
@@ -57,16 +51,6 @@ public abstract class Entity<TId> : IAggregateMember
     public override bool Equals(object? obj)
     {
         if (obj is not Entity<TId> other)
-        {
-            return false;
-        }
-
-        if (AggregateName != other.AggregateName)
-        {
-            return false;
-        }
-
-        if (AggregateVersion != other.AggregateVersion)
         {
             return false;
         }
@@ -120,7 +104,7 @@ public abstract class Entity<TId> : IAggregateMember
     /// Значение, противоположное результату
     /// <see cref="operator ==(Entity{TId}, Entity{TId})"/>.
     /// </returns>
-    public static bool operator !=(Entity<TId> left, Entity<TId> right)
+    public static bool operator !=(Entity<TId>? left, Entity<TId>? right)
     {
         return (left == right) is false;
     }
@@ -128,10 +112,6 @@ public abstract class Entity<TId> : IAggregateMember
     /// <inheritdoc cref="object.GetHashCode()"/>
     public override int GetHashCode()
     {
-        return
-            GetType().Name.GetHashCode() ^
-            Id!.GetHashCode() ^
-            AggregateName.GetHashCode() ^
-            AggregateVersion.GetHashCode();
+        return GetType().Name.GetHashCode() ^ Id!.GetHashCode();
     }
 }
