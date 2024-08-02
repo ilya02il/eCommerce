@@ -2,45 +2,17 @@
 
 public class EntityTests
 {
-    private class FirstTestEntity(int identifier)
-        : Entity<int>(identifier)
-    {
-        public override string AggregateName => nameof(EntityTests);
+    private class FirstTestEntity(int identifier) : Entity<int>(identifier);
 
-        public override Version AggregateVersion => new(major: 1);
-    }
-
-    private class SecondTestEntity(int identifier)
-        : Entity<int>(identifier)
-    {
-        public override string AggregateName => nameof(EntityTests);
-
-        public override Version AggregateVersion => new(major: 1);
-    }
-
-    private class ThirdTestEntity(int identifier)
-        : Entity<int>(identifier)
-    {
-        public override string AggregateName => nameof(EntityTests);
-
-        public override Version AggregateVersion => new(major: 2);
-    }
-
-    private class FourthTestEntity(int identifier)
-        : Entity<int>(identifier)
-    {
-        public override string AggregateName => "test";
-
-        public override Version AggregateVersion => new(major: 1);
-    }
+    private class SecondTestEntity(int identifier) : Entity<int>(identifier);
 
     [Fact]
     public void Entities_Should_Be_Equal()
     {
         // Arrange
-        var firstEntity = new FirstTestEntity(1);
-        var secondEntity = new FirstTestEntity(1);
-        FirstTestEntity nullEntity = null;
+        Entity<int> firstEntity = new FirstTestEntity(1);
+        Entity<int> secondEntity = new FirstTestEntity(1);
+        Entity<int>? nullEntity = null;
 
         // Act
         var equalsResult = firstEntity
@@ -70,13 +42,10 @@ public class EntityTests
     public void Entities_Should_Not_Be_Equal()
     {
         // Arrange
-        var firstEntity = new FirstTestEntity(1);
-        var firstEntityWithDifferentId = new FirstTestEntity(2);
-        FirstTestEntity? nullFirstEntity = null;
-
-        var secondEntity = new SecondTestEntity(1);
-        var thirdEntity = new ThirdTestEntity(1);
-        var fourthEntity = new FourthTestEntity(1);
+        Entity<int> firstEntity = new FirstTestEntity(1);
+        Entity<int> firstEntityWithDifferentId = new FirstTestEntity(2);
+        Entity<int>? nullEntity = null;
+        Entity<int> secondEntity = new SecondTestEntity(1);
 
         // Act
         var equalsWithNotEntityResult = firstEntity
@@ -85,20 +54,14 @@ public class EntityTests
         var equalsWithOtherTypeEntityResult = firstEntity
             .Equals(secondEntity);
 
-        var equalsWithAnotherAggregateVersionResult = firstEntity
-            .Equals(thirdEntity);
-
-        var equalsWithAnotherAggregateEntityResult = firstEntity
-            .Equals(fourthEntity);
-
         var equalsOfEntityWithDifferentIdsResult = firstEntity
             .Equals(firstEntityWithDifferentId);
 
         var equalOperatorOfNullResult =
-            nullFirstEntity == secondEntity;
+            nullEntity == secondEntity;
 
         var equalOperatorWithNullResult =
-            firstEntity == nullFirstEntity;
+            firstEntity == nullEntity;
 
         var notEqualOperatorResult =
             firstEntity != firstEntityWithDifferentId;
@@ -109,14 +72,6 @@ public class EntityTests
             .BeFalse();
 
         equalsWithOtherTypeEntityResult
-            .Should()
-            .BeFalse();
-
-        equalsWithAnotherAggregateVersionResult
-            .Should()
-            .BeFalse();
-
-        equalsWithAnotherAggregateEntityResult
             .Should()
             .BeFalse();
 
