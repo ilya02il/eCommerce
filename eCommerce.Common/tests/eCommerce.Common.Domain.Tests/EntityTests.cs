@@ -2,19 +2,17 @@
 
 public class EntityTests
 {
-    private class FirstTestEntity(int identifier)
-        : Entity<int>(identifier);
+    private class FirstTestEntity(int identifier) : Entity<int>(identifier);
 
-    private class SecondTestEntity(int identifier)
-        : Entity<int>(identifier);
+    private class SecondTestEntity(int identifier) : Entity<int>(identifier);
 
     [Fact]
     public void Entities_Should_Be_Equal()
     {
         // Arrange
-        var firstEntity = new FirstTestEntity(1);
-        var secondEntity = new FirstTestEntity(1);
-        FirstTestEntity nullEntity = null;
+        Entity<int> firstEntity = new FirstTestEntity(1);
+        Entity<int> secondEntity = new FirstTestEntity(1);
+        Entity<int>? nullEntity = null;
 
         // Act
         var equalsResult = firstEntity
@@ -44,11 +42,10 @@ public class EntityTests
     public void Entities_Should_Not_Be_Equal()
     {
         // Arrange
-        var firstEntity = new FirstTestEntity(1);
-        var firstEntityWithDifferentId = new FirstTestEntity(2);
-        FirstTestEntity nullFirstEntity = null;
-
-        var secondEntity = new SecondTestEntity(1);
+        Entity<int> firstEntity = new FirstTestEntity(1);
+        Entity<int> firstEntityWithDifferentId = new FirstTestEntity(2);
+        Entity<int>? nullEntity = null;
+        Entity<int> secondEntity = new SecondTestEntity(1);
 
         // Act
         var equalsWithNotEntityResult = firstEntity
@@ -61,10 +58,10 @@ public class EntityTests
             .Equals(firstEntityWithDifferentId);
 
         var equalOperatorOfNullResult =
-            nullFirstEntity == secondEntity;
+            nullEntity == secondEntity;
 
         var equalOperatorWithNullResult =
-            firstEntity == nullFirstEntity;
+            firstEntity == nullEntity;
 
         var notEqualOperatorResult =
             firstEntity != firstEntityWithDifferentId;
