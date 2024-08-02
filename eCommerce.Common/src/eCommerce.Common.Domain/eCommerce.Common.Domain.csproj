@@ -4,10 +4,31 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>0.4.0</Version>
+    <Version>0.5.0</Version>
     <Authors>Ilinykh Ilya</Authors>
     <Description>Библиотека базовых классов для доменного слоя.</Description>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <Target Name="PreparePackageReleaseNotesFromFile" BeforeTargets="GenerateNuspec">
+    <GetAssemblyIdentity AssemblyFiles="$(TargetPath)">
+      <Output TaskParameter="Assemblies" ItemName="AssemblyInfo" />
+    </GetAssemblyIdentity>
+
+    <XmlPeek
+      XmlInputPath="CHANGELOG.xml"
+      Query="release[@version='@(AssemblyInfo->'%(Version)')']/text()"
+    >
+      <Output TaskParameter="Result" ItemName="ReleaseNotes"/>
+    </XmlPeek>
+
+    <PropertyGroup>
+      <PackageReleaseNotes>@(ReleaseNotes, '%0a')</PackageReleaseNotes>
+    </PropertyGroup>
+  </Target>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DocumentationFile>bin\Release\eCommerce.Common.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="eCommerce.Common" Version="0.3.0" />
+    <PackageReference Include="eCommerce.Common" Version="0.5.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
     <PackageReference Include="SonarAnalyzer.CSharp" Version="9.19.0.84025">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
