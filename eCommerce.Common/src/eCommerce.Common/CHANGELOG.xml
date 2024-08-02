@@ -1,0 +1,4 @@
+﻿<release version="0.5.0.0">
+- Добавил CHANGELOG.xml и генерацию PackageReleaseNotes на его основе
+- Убрал логику по генерации Id и получению DateStamp из класса Event
+</release>
